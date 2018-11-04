@@ -1,1 +1,1 @@
-"# Bulanik-Mantik-Y-ntemiyle-Tahmin-Edilmesi-" 
+Tarladan Alınan Buğdayın Miktarının  Bulanık Mantık Yöntemiyle Tahmin Edilmesi 
