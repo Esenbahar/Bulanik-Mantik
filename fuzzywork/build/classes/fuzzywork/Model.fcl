@@ -1,0 +1,108 @@
+FUNCTION_BLOCK model
+VAR_INPUT
+    sumiktari : REAL;
+    bugdaytohumu : REAL;
+    guneslisaatmiktari : REAL;
+END_VAR
+
+VAR_OUTPUT
+    cikanbugday : REAL;    
+END_VAR
+
+//BU KISMIN BULANIKLASTIRMA ICIN
+//sumiktari - ton
+FUZZIFY sumiktari
+    TERM az :=(0,0) (10,1) (19,0);
+    TERM orta :=(10,0) (25,1) (40,0) ;
+    TERM cok :=(30,0) (45,1)(70,0);
+    TERM cokfazla :=(60,0) (70,1) (80,1);
+
+END_FUZZIFY
+
+//ekilenbugdaytohumu - kg
+FUZZIFY bugdaytohumu
+    TERM az :=(0,0) (4,1)(12,0);
+    TERM orta :=(8,0) (16,1) (20,0) ;
+    TERM cok :=(16,0) (24,1)(28,0);
+    TERM cokfazla :=(24,0) (28,1)(36,1);
+END_FUZZIFY
+
+//guneslisaatmiktari - saat
+FUZZIFY guneslisaatmiktari
+     TERM az :=(0,0) (600,1)(1200,0);
+    TERM orta :=(1000,0) (1600,1) (2000,0) ;
+    TERM cok :=(1800,0) (2600,1)(2800,1);
+    
+END_FUZZIFY
+
+//DURULAMA
+//cikanbugday-ton
+DEFUZZIFY cikanbugday
+     TERM az :=(0,1) (10,1)(15,0);
+    TERM orta :=(8,0) (25,1) (45,0) ;
+    TERM cok :=(35,0) (50,1)(65,0);
+    TERM cokfazla :=(55,0) (65,1)(75,1);
+
+    METHOD : COG;
+    DEFAULT :=0;
+END_DEFUZZIFY
+
+
+RULEBLOCK kurallarblock1
+    AND : MIN;
+    ACT : MIN;
+    ACCU : MAX;
+
+    RULE 1: IF sumiktari IS az AND bugdaytohumu IS az AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 2: IF sumiktari IS az AND bugdaytohumu IS az AND guneslisaatmiktari IS orta THEN cikanbugday IS az;
+    RULE 3: IF sumiktari IS az AND bugdaytohumu IS az AND guneslisaatmiktari IS cok THEN cikanbugday IS az;
+    RULE 4: IF sumiktari IS az AND bugdaytohumu IS orta AND guneslisaatmiktari IS az THEN cikanbugday IS orta;
+    RULE 5: IF sumiktari IS az AND bugdaytohumu IS orta AND guneslisaatmiktari IS orta THEN cikanbugday IS az;
+    RULE 6: IF sumiktari IS az AND bugdaytohumu IS orta AND guneslisaatmiktari IS cok THEN cikanbugday IS az;
+    RULE 7: IF sumiktari IS az AND bugdaytohumu IS cok AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 8: IF sumiktari IS az AND bugdaytohumu IS cok AND guneslisaatmiktari IS orta THEN cikanbugday IS orta;
+    RULE 9: IF sumiktari IS az AND bugdaytohumu IS cok AND guneslisaatmiktari IS cok THEN cikanbugday IS az;
+    RULE 10: IF sumiktari IS az AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 11: IF sumiktari IS az AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS orta THEN cikanbugday IS az;
+    RULE 12: IF sumiktari IS az AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS cok THEN cikanbugday IS az;
+    RULE 13: IF sumiktari IS orta AND bugdaytohumu IS az AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 14: IF sumiktari IS orta AND bugdaytohumu IS az AND guneslisaatmiktari IS orta THEN cikanbugday IS orta; 
+    RULE 15: IF sumiktari IS orta AND bugdaytohumu IS az AND guneslisaatmiktari IS cok THEN cikanbugday IS az;
+    RULE 16: IF sumiktari IS orta AND bugdaytohumu IS orta AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 17: IF sumiktari IS orta AND bugdaytohumu IS orta AND guneslisaatmiktari IS orta THEN cikanbugday IS orta;
+    RULE 18: IF sumiktari IS orta AND bugdaytohumu IS orta AND guneslisaatmiktari IS cok THEN cikanbugday IS orta;
+    RULE 19: IF sumiktari IS orta AND bugdaytohumu IS cok AND guneslisaatmiktari IS az THEN cikanbugday IS orta;
+    RULE 20: IF sumiktari IS orta AND bugdaytohumu IS cok AND guneslisaatmiktari IS orta THEN cikanbugday IS orta;
+    RULE 21: IF sumiktari IS orta AND bugdaytohumu IS cok AND guneslisaatmiktari IS cok THEN cikanbugday IS orta;
+    RULE 22: IF sumiktari IS orta AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 23: IF sumiktari IS orta AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS orta THEN cikanbugday IS orta;
+    RULE 24: IF sumiktari IS orta AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS cok THEN cikanbugday IS az;
+    RULE 25: IF sumiktari IS cok AND bugdaytohumu IS az AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 26: IF sumiktari IS cok AND bugdaytohumu IS az AND guneslisaatmiktari IS orta THEN cikanbugday IS orta;
+    RULE 27: IF sumiktari IS cok AND bugdaytohumu IS az AND guneslisaatmiktari IS cok THEN cikanbugday IS cok;
+    RULE 28: IF sumiktari IS cok AND bugdaytohumu IS orta AND guneslisaatmiktari IS az THEN cikanbugday IS orta;
+    RULE 29: IF sumiktari IS cok AND bugdaytohumu IS orta AND guneslisaatmiktari IS orta THEN cikanbugday IS cokfazla;
+    RULE 30: IF sumiktari IS cok AND bugdaytohumu IS orta AND guneslisaatmiktari IS cok THEN cikanbugday IS orta;
+    RULE 31: IF sumiktari IS cok AND bugdaytohumu IS cok AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 32: IF sumiktari IS cok AND bugdaytohumu IS cok AND guneslisaatmiktari IS orta THEN cikanbugday IS cokfazla;
+    RULE 33: IF sumiktari IS cok AND bugdaytohumu IS cok AND guneslisaatmiktari IS cok THEN cikanbugday IS orta;
+    RULE 34: IF sumiktari IS cok AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 35: IF sumiktari IS cok AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS orta THEN cikanbugday IS cok;
+    RULE 36: IF sumiktari IS cok AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS cok THEN cikanbugday IS orta;
+    RULE 37: IF sumiktari IS cokfazla AND bugdaytohumu IS az AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 38: IF sumiktari IS cokfazla AND bugdaytohumu IS az AND guneslisaatmiktari IS orta THEN cikanbugday IS az;
+    RULE 39: IF sumiktari IS cokfazla AND bugdaytohumu IS az AND guneslisaatmiktari IS cok THEN cikanbugday IS orta;
+    RULE 40: IF sumiktari IS cokfazla AND bugdaytohumu IS orta AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 41: IF sumiktari IS cokfazla AND bugdaytohumu IS orta AND guneslisaatmiktari IS orta THEN cikanbugday IS cokfazla;
+    RULE 42: IF sumiktari IS cokfazla AND bugdaytohumu IS orta AND guneslisaatmiktari IS cok THEN cikanbugday IS cok;
+    RULE 43: IF sumiktari IS cokfazla AND bugdaytohumu IS cok AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 44: IF sumiktari IS cokfazla AND bugdaytohumu IS cok AND guneslisaatmiktari IS orta THEN cikanbugday IS cok;
+    RULE 45: IF sumiktari IS cokfazla AND bugdaytohumu IS cok AND guneslisaatmiktari IS cok THEN cikanbugday IS cokfazla;
+    RULE 46: IF sumiktari IS cokfazla AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS az THEN cikanbugday IS az;
+    RULE 47: IF sumiktari IS cokfazla AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS orta THEN cikanbugday IS cokfazla;
+    RULE 48: IF sumiktari IS cokfazla AND bugdaytohumu IS cokfazla AND guneslisaatmiktari IS cok THEN cikanbugday IS cok;
+    
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
